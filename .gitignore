@@ -10,7 +10,7 @@
 *.bak
 /.idea
 /.vscode
-/.ruby-version
+# /.ruby-version
 /.tool-versions
 
 # Ignore bundler config.
