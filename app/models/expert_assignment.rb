@@ -1,5 +1,5 @@
 class ExpertAssignment < ApplicationRecord
-  enum status: { active: "active", resolved: "resolved", unclaimed: "unclaimed" }
+  enum :status, { active: "active", resolved: "resolved", unclaimed: "unclaimed" }
 
   # Associations
   belongs_to :conversation

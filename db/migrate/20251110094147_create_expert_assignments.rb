@@ -12,6 +12,7 @@ class CreateExpertAssignments < ActiveRecord::Migration[8.1]
       t.string :status, null: false, default: "active"
       t.datetime :assigned_at, null: false
       t.datetime :resolved_at
+      t.bigint :rating
 
       t.timestamps
     end

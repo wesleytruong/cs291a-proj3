@@ -1,5 +1,5 @@
 class Conversation < ApplicationRecord
-  enum status: { waiting: "waiting", active: "active", closed: "closed" }
+  enum :status, { waiting: "waiting", active: "active", closed: "closed" }
 
   # Associations
   belongs_to :initiator, class_name: "User"

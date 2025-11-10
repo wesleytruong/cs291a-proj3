@@ -1,5 +1,5 @@
 class Message < ApplicationRecord
-  enum sender_role: { initiator: "initiator", expert: "expert" }
+  enum :sender_role, { initiator: "initiator", expert: "expert" }
 
   # Associations
   belongs_to :conversation

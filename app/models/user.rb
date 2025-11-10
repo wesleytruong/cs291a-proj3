@@ -10,4 +10,14 @@ class User < ApplicationRecord
   # Validations
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true
+  validates :password, presence: true, on: :create
+
+  # Callbacks
+  before_validation :set_default_email, on: :create
+
+  private
+
+  def set_default_email
+    self.email = "#{username}@example.com" if email.blank? && username.present?
+  end
 end
