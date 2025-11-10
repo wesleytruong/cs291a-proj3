@@ -1,16 +1,16 @@
 class ExpertController < ApplicationController
   before_action :authenticate_with_jwt!
-  before_action :ensure_expert_profile, except: [:profile]
-  before_action :set_conversation, only: [:claim, :unclaim]
+  before_action :ensure_expert_profile, except: [ :profile ]
+  before_action :set_conversation, only: [ :claim, :unclaim ]
 
   def queue
     waiting_conversations = Conversation.where(status: "waiting", assigned_expert_id: nil)
-                                      .includes(:initiator, :messages)
-    
+                                        .includes(:initiator, :messages)
+
     assigned_conversations = current_user.assigned_conversations
-                                       .where(status: "active")
-                                       .includes(:initiator, :messages)
-    
+                                         .where(status: "active")
+                                         .includes(:initiator, :messages)
+
     render json: {
       waitingConversations: waiting_conversations.map { |conv| conversation_response(conv) },
       assignedConversations: assigned_conversations.map { |conv| conversation_response(conv) }
@@ -19,34 +19,34 @@ class ExpertController < ApplicationController
 
   def claim
     return render json: { error: "Conversation is already assigned to an expert" }, status: :unprocessable_entity if @conversation.assigned_expert_id.present?
-    
+
     @conversation.update!(
       assigned_expert: current_user,
       status: "active"
     )
-    
+
     @conversation.expert_assignments.create!(
       expert: current_user.expert_profile,
       assigned_at: Time.current,
       status: "active"
     )
-    
+
     render json: { success: true }
   end
 
   def unclaim
     return render_forbidden("You are not assigned to this conversation") unless @conversation.assigned_expert_id == current_user.id
-    
+
     @conversation.update!(
       assigned_expert: nil,
       status: "waiting"
     )
-    
+
     @conversation.expert_assignments.where(status: "active").update_all(
       status: "unclaimed",
       resolved_at: Time.current
     )
-    
+
     render json: { success: true }
   end
 
@@ -70,9 +70,9 @@ class ExpertController < ApplicationController
 
   def assignment_history
     assignments = current_user.expert_profile.expert_assignments
-                             .includes(:conversation)
-                             .order(assigned_at: :desc)
-    
+                              .includes(:conversation)
+                              .order(assigned_at: :desc)
+
     render json: assignments.map { |assignment| assignment_response(assignment) }
   end
 
@@ -80,12 +80,15 @@ class ExpertController < ApplicationController
 
   def ensure_expert_profile
     return if current_user.expert_profile
+
     render json: { error: "Expert profile required" }, status: :forbidden
   end
 
   def set_conversation
     @conversation = Conversation.find_by(id: params[:conversation_id])
-    return render_not_found("Conversation not found") unless @conversation
+    return if @conversation
+
+    render_not_found("Conversation not found")
   end
 
   def profile_params

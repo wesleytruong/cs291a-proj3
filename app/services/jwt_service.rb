@@ -11,7 +11,7 @@ class JwtService
     else
       token_payload = payload.merge(exp: 15.minutes.from_now.to_i)
     end
-    
+
     JWT.encode(token_payload, SECRET_KEY, "HS256")
   end
 

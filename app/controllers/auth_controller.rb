@@ -1,13 +1,13 @@
 class AuthController < ApplicationController
-  before_action :authenticate_with_session!, only: [:logout, :refresh, :me]
+  before_action :authenticate_with_session!, only: [ :logout, :refresh, :me ]
 
   def register
     @user = User.new(user_params)
-    
+
     if @user.save
       session[:user_id] = @user.id
       @user.update(last_active_at: Time.current)
-      
+
       render json: {
         user: user_response(@user),
         token: JwtService.encode(user_id: @user.id)
@@ -19,11 +19,11 @@ class AuthController < ApplicationController
 
   def login
     @user = User.find_by(username: params[:username])
-    
+
     if @user&.authenticate(params[:password])
       session[:user_id] = @user.id
       @user.update(last_active_at: Time.current)
-      
+
       render json: {
         user: user_response(@user),
         token: JwtService.encode(user_id: @user.id)

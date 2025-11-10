@@ -1,24 +1,31 @@
 class MessagesController < ApplicationController
   before_action :authenticate_with_jwt!
-  before_action :set_conversation, only: [:index]
-  before_action :set_message, only: [:mark_read]
+  before_action :set_conversation, only: [ :index ]
+  before_action :set_message, only: [ :mark_read ]
 
   def index
     return render_forbidden unless can_access_conversation?(@conversation)
-    
+
     @messages = @conversation.messages.includes(:sender).order(:created_at)
     render json: @messages.map { |msg| message_response(msg) }
   end
 
   def create
     @conversation = Conversation.find_by(id: params[:conversationId])
-    return render_not_found("Conversation not found") unless @conversation
-    return render_forbidden unless can_access_conversation?(@conversation)
-    
+    unless @conversation
+      render_not_found("Conversation not found")
+      return
+    end
+
+    unless can_access_conversation?(@conversation)
+      render_forbidden
+      return
+    end
+
     @message = @conversation.messages.build(message_params)
     @message.sender = current_user
     @message.sender_role = determine_sender_role(@conversation, current_user)
-    
+
     if @message.save
       render json: message_response(@message), status: :created
     else
@@ -27,8 +34,11 @@ class MessagesController < ApplicationController
   end
 
   def mark_read
-    return render_forbidden("Cannot mark your own messages as read") if @message.sender_id == current_user.id
-    
+    if @message.sender_id == current_user.id
+      render_forbidden("Cannot mark your own messages as read")
+      return
+    end
+
     @message.update!(is_read: true)
     render json: { success: true }
   end
@@ -37,17 +47,21 @@ class MessagesController < ApplicationController
 
   def set_conversation
     @conversation = Conversation.find_by(id: params[:conversation_id])
-    return render_not_found("Conversation not found") unless @conversation
+    return if @conversation
+
+    render_not_found("Conversation not found")
   end
 
   def set_message
     @message = Message.find_by(id: params[:id])
-    return render_not_found("Message not found") unless @message
+    return if @message
+
+    render_not_found("Message not found")
   end
 
   def can_access_conversation?(conversation)
-    conversation.initiator_id == current_user.id || 
-    conversation.assigned_expert_id == current_user.id
+    conversation.initiator_id == current_user.id ||
+      conversation.assigned_expert_id == current_user.id
   end
 
   def determine_sender_role(conversation, user)

@@ -1,24 +1,24 @@
 class ConversationsController < ApplicationController
   before_action :authenticate_with_jwt!
-  before_action :set_conversation, only: [:show]
+  before_action :set_conversation, only: [ :show ]
 
   def index
     @conversations = current_user.initiated_conversations
-                                .or(current_user.assigned_conversations)
-                                .includes(:initiator, :assigned_expert, :messages)
-    
+                                 .or(current_user.assigned_conversations)
+                                 .includes(:initiator, :assigned_expert, :messages)
+
     render json: @conversations.map { |conv| conversation_response(conv) }
   end
 
   def show
     return render_forbidden unless can_access_conversation?(@conversation)
-    
+
     render json: conversation_response(@conversation)
   end
 
   def create
     @conversation = current_user.initiated_conversations.build(conversation_params)
-    
+
     if @conversation.save
       render json: conversation_response(@conversation), status: :created
     else
@@ -30,12 +30,14 @@ class ConversationsController < ApplicationController
 
   def set_conversation
     @conversation = Conversation.find_by(id: params[:id])
-    return render_not_found("Conversation not found") unless @conversation
+    return if @conversation
+
+    render_not_found("Conversation not found")
   end
 
   def can_access_conversation?(conversation)
-    conversation.initiator_id == current_user.id || 
-    conversation.assigned_expert_id == current_user.id
+    conversation.initiator_id == current_user.id ||
+      conversation.assigned_expert_id == current_user.id
   end
 
   def conversation_params
