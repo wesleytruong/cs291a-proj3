@@ -49,3 +49,4 @@ gem "activerecord-session_store" # For database-backed session storage
 group :test do
    gem "mocha"
 end
+gem "ruby-lsp"

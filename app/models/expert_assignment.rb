@@ -1,0 +1,2 @@
+class ExpertAssignment < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+class ExpertProfile < ApplicationRecord
+end

@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  conversation_id: 
+  sender_id: 
+  sender_role: MyString
+  content: MyText
+  is_read: false
+  created_at: 2025-11-10 09:42:19
+  updated_at: 2025-11-10 09:42:19
+
+two:
+  conversation_id: 
+  sender_id: 
+  sender_role: MyString
+  content: MyText
+  is_read: false
+  created_at: 2025-11-10 09:42:19
+  updated_at: 2025-11-10 09:42:19
