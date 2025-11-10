@@ -65,7 +65,7 @@ class ConversationsTest < ActionDispatch::IntegrationTest
 
   test "GET /conversations includes assignedExpertUsername when expert is assigned" do
     expert_user = User.create!(username: "expertuser", password: "password123")
-    expert = ExpertProfile.create!(user: expert_user, bio: "Expert developer", knowledge_base_links: [])
+    expert = expert_user.expert_profile  # Use the automatically created profile
     conversation = Conversation.create!(title: "Test Conversation", initiator: @user, assigned_expert: expert.user, status: "active")
     get "/conversations", headers: { "Authorization" => "Bearer #{@token}" }
     assert_response :ok
@@ -83,7 +83,7 @@ class ConversationsTest < ActionDispatch::IntegrationTest
 
   test "GET /conversations/:id includes questionerUsername and assignedExpertUsername" do
     expert_user = User.create!(username: "expertuser2", password: "password123")
-    expert = ExpertProfile.create!(user: expert_user, bio: "Expert developer", knowledge_base_links: [])
+    expert = expert_user.expert_profile  # Use the automatically created profile
     conversation = Conversation.create!(title: "Test Conversation", initiator: @user, assigned_expert: expert.user, status: "active")
     get "/conversations/#{conversation.id}", headers: { "Authorization" => "Bearer #{@token}" }
     assert_response :ok

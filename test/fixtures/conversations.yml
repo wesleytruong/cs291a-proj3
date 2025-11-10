@@ -1,33 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: MyString
-  bigint: MyString
-  title: MyString
-  status: MyString
-  initiator_id: MyString
-  bigint: MyString
-  assigned_expert_id: MyString
-  bigint: MyString
-  last_message_at: MyString
-  datetime: MyString
-  created_at: MyString
-  datetime: MyString
-  updated_at: MyString
-  datetime: MyString
+  title: "Test Conversation One"
+  status: "waiting" 
+  initiator_id: 1
+  assigned_expert_id: 
+  last_message_at: <%= 1.hour.ago %>
+  created_at: <%= 2.hours.ago %>
+  updated_at: <%= 1.hour.ago %>
 
 two:
-  id: MyString
-  bigint: MyString
-  title: MyString
-  status: MyString
-  initiator_id: MyString
-  bigint: MyString
-  assigned_expert_id: MyString
-  bigint: MyString
-  last_message_at: MyString
-  datetime: MyString
-  created_at: MyString
-  datetime: MyString
-  updated_at: MyString
-  datetime: MyString
+  title: "Test Conversation Two"
+  status: "in_progress"
+  initiator_id: 2
+  assigned_expert_id: 2
+  last_message_at: <%= 30.minutes.ago %>
+  created_at: <%= 1.hour.ago %>
+  updated_at: <%= 30.minutes.ago %>

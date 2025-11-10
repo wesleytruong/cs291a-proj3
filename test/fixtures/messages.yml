@@ -1,19 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  conversation_id: 
-  sender_id: 
-  sender_role: MyString
-  content: MyText
+  conversation_id: 1
+  sender_id: 1
+  sender_role: "initiator"
+  content: "I need help with my project"
   is_read: false
-  created_at: 2025-11-10 09:42:19
-  updated_at: 2025-11-10 09:42:19
+  created_at: <%= 1.hour.ago %>
+  updated_at: <%= 1.hour.ago %>
 
 two:
-  conversation_id: 
-  sender_id: 
-  sender_role: MyString
-  content: MyText
-  is_read: false
-  created_at: 2025-11-10 09:42:19
-  updated_at: 2025-11-10 09:42:19
+  conversation_id: 2
+  sender_id: 2
+  sender_role: "expert"
+  content: "Let me help you with that"
+  is_read: true
+  created_at: <%= 30.minutes.ago %>
+  updated_at: <%= 30.minutes.ago %>

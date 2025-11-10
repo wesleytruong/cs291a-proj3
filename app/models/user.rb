@@ -14,10 +14,15 @@ class User < ApplicationRecord
 
   # Callbacks
   before_validation :set_default_email, on: :create
+  after_create :create_expert_profile
 
   private
 
   def set_default_email
     self.email = "#{username}@example.com" if email.blank? && username.present?
+  end
+
+  def create_expert_profile
+    ExpertProfile.create!(user: self, bio: "Expert in various topics")
   end
 end

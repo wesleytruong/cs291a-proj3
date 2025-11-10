@@ -1,19 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  conversation_id: 
-  expert_id: 
-  status: MyString
-  assigned_at: 2025-11-10 09:41:47
-  resolved_at: 2025-11-10 09:41:47
-  created_at: 2025-11-10 09:41:47
-  updated_at: 2025-11-10 09:41:47
+  conversation_id: 1
+  expert_id: 1
+  status: "active"
+  assigned_at: <%= 1.hour.ago %>
+  resolved_at: 
+  rating:
+  created_at: <%= 1.hour.ago %>
+  updated_at: <%= 30.minutes.ago %>
 
 two:
-  conversation_id: 
-  expert_id: 
-  status: MyString
-  assigned_at: 2025-11-10 09:41:47
-  resolved_at: 2025-11-10 09:41:47
-  created_at: 2025-11-10 09:41:47
-  updated_at: 2025-11-10 09:41:47
+  conversation_id: 2
+  expert_id: 2
+  status: "resolved"
+  assigned_at: <%= 2.hours.ago %>
+  resolved_at: <%= 30.minutes.ago %>
+  rating: 5
+  created_at: <%= 2.hours.ago %>
+  updated_at: <%= 30.minutes.ago %>

@@ -11,7 +11,7 @@ class ConversationsController < ApplicationController
   end
 
   def show
-    return render_forbidden unless can_access_conversation?(@conversation)
+    return render_not_found unless can_access_conversation?(@conversation)
 
     render json: conversation_response(@conversation)
   end
